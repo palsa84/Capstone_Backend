@@ -3,19 +3,24 @@ const LoginModel = require('../models/LoginModel');
 
 // 회원가입 서비스 로직
 // 이메일 중복 체크 후 중복이 아니면 DB에 사용자 정보 저장
-const signup = (userName, userEmail, userPw, callback) => {
+const signup = (userName, userEmail, userPw, userGender, userBirth, userHealthInfo, callback) => {
     SignupModel.checkEmailExists(userEmail, (err, results) => {
         if (err) return callback(err);
         
         // 이미 가입된 이메일일 경우 
-        if (results.length > 0) {
-            return callback(null, { exists: true });
+        if (results.length > 0) {return callback(null, { exists: true });
         }
         // 이메일 중복이 아니면 DB에 사용자 정보 저장
-        SignupModel.insertUser(userName, userEmail, userPw, (err, result) => {
+        SignupModel.checkEmailExists(userEmail, (err, results) => {
             if (err) return callback(err);
-            callback(null, { success: true, userId: result.insertId });
+            if (results.length > 0) return callback(null, { exists: true });
+
+            SignupModel.insertUser(userName, userEmail, userPw, userGender, userBirth, userHealthInfo, (err, result) => {
+                if (err) return callback(err);
+                callback(null, { success: true, insertId: result.insertId });
+            });
         });
+
     });
 };
 

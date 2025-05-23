@@ -3,13 +3,12 @@ const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const userRoutes = require('./routes/userRoutes');  
+const lessonRoutes = require('./routes/lessonRoutes');
 
 const app = express();
 const PORT = 5000;
 
-const lessonRoutes = require('./routes/lessonRoutes');
-
-const userRoutes = require('./routes/userRoutes');
 
 // 미들웨어 설정
 app.use(cors()); // 모든 요청 허용
@@ -27,16 +26,15 @@ app.get('/', (req, res) => {
     res.send('파크골프 레슨 예약 앱 서버 실행 중');
 });
 
+app.use('/api/lessons', lessonRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/user', userRoutes);
+
 
 // 서버 실행
-app.listen(PORT, () => {
+app.listen(5000, '0.0.0.0', () => {
     console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
 
 
-app.use('/api/lessons', lessonRoutes);
 
-app.use('/api/cart', cartRoutes);
-
-
-app.use('/api/user', userRoutes);

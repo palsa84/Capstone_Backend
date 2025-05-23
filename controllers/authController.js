@@ -3,16 +3,31 @@ const db = require('../db'); // 비밀번호 직접 업데이트용
 
 // 회원가입
 const signup = (req, res) => {
-    const { userName, userEmail, userPw } = req.body;
-    if (!userName || !userEmail || !userPw) return res.status(400).json({ error: '필수 항목 누락' });
+    const { userName, userEmail, userPw, userGender, userBirth, userHealthInfo } = req.body;
+    authService.signup(userName, userEmail, userPw, userGender, userBirth, userHealthInfo, (err, result) => {
+        if (err) {
+            return res.status(500).json({ success: false });
+        }
 
-    authService.signup(userName, userEmail, userPw, (err, result) => {
-        if (err) return res.status(500).json({ error: '서버 오류' });
-        if (result.exists) return res.status(409).json({ error: '이미 가입된 이메일입니다.' });
+        if (result.exists) return res.status(409).json({ success: false, message: '이미 가입된 이메일입니다.' });
 
-        res.json(result);
+        res.json({
+  success: true,
+  user: {
+    userNum: result.insertId,
+    userName,
+    userEmail,
+    userPw,
+    userGender,
+    userBirth,
+    userHealthInfo,
+    userRole: '수강생',
+    userImg: 'default_userImg.png'
+  }
+});
     });
 };
+
 
 // 로그인
 const login = (req, res) => {
