@@ -1,8 +1,7 @@
 const db = require('../db');
 
-// 조인
-const findAllWithInstructor = (callback) => {
-    const sql = `
+const findByFilters = (place, level, callback) => {
+    let sql = `
         SELECT 
             l.lesNum,
             l.lesName,
@@ -14,16 +13,29 @@ const findAllWithInstructor = (callback) => {
             l.lesThumbImg,
             l.lesBackgroundImg,
             l.lesTime,
+            l.lesLevel,
             u.userName AS instName,
             u.userImg,
             u.userinfo
         FROM lesson l
         JOIN user u ON l.instNum = u.userNum
+        WHERE 1=1
     `;
-    db.query(sql, callback);
+    const params = [];
+
+    if (place) {
+        sql += ' AND l.lesPlace = ?';
+        params.push(place);
+    }
+
+    if (level) {
+        sql += ' AND l.lesLevel = ?';
+        params.push(level);
+    }
+
+    db.query(sql, params, callback);
 };
 
-
 module.exports = {
-    findAllWithInstructor,
+    findByFilters,
 };

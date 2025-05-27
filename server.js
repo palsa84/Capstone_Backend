@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const userRoutes = require('./routes/userRoutes');  
 const lessonRoutes = require('./routes/lessonRoutes');
+const favoriteRoutes = require('./routes/favoriteRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -28,8 +29,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/cart', cartRoutes);
-app.use('/api/user', userRoutes);
-
+app.use('/api/users', userRoutes); 
+app.use('/api/favorite', favoriteRoutes);
 
 // 서버 실행
 app.listen(5000, '0.0.0.0', () => {

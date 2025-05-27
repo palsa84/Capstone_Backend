@@ -1,24 +1,42 @@
 const db = require('../db');
 
-// 사용자 위치 업데이트
-const updateLocation = async (userNum, location1, location2) => {
-    const sql = 'UPDATE `user` SET userlocation1 = ?, userlocation2 = ? WHERE userNum = ?';
-    const [result] = await db.execute(sql, [location1, location2, userNum]);
-    return result;
+// 위치 저장
+const updateLocation = (userNum, location1, location2) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'UPDATE user SET userlocation1 = ?, userlocation2 = ? WHERE userNum = ?';
+    db.query(sql, [location1, location2, userNum], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
 };
 
-
-// db에서 위치정보 가져오기
+// 위치 불러오기
 const getLocationFromDB = (userNum, callback) => {
-    const sql = 'SELECT userlocation1, userlocation2 FROM user WHERE userNum = ?';
-    db.query(sql, [userNum], (err, results) => {
-        if (err) return callback(err, null);
-        if (results.length === 0) return callback(null, null);
-        callback(null, results[0]);
+  const sql = 'SELECT userlocation1, userlocation2 FROM user WHERE userNum = ?';
+  db.query(sql, [userNum], callback);
+};
+
+// 비밀번호 변경 (현재 비밀번호 확인 후 업데이트)
+const verifyPasswordAndUpdate = (userNum, currentPw, newPw, callback) => {
+    const checkSql = 'SELECT * FROM user WHERE userNum = ? AND userPw = ?';
+    db.query(checkSql, [userNum, currentPw], (err, results) => {
+        if (err) return callback(err);
+        if (results.length === 0) return callback(null, false);
+
+        const updateSql = 'UPDATE user SET userPw = ? WHERE userNum = ?';
+        db.query(updateSql, [newPw, userNum], (updateErr, updateResult) => {
+
+            if (updateErr) return callback(updateErr);
+            return callback(null, true);
+        });
     });
 };
 
+
+
 module.exports = {
-    updateLocation,
-    getLocationFromDB, 
+  updateLocation,
+  getLocationFromDB,
+  verifyPasswordAndUpdate,
 };

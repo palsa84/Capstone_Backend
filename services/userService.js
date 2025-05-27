@@ -1,13 +1,9 @@
 const QuitModel = require('../models/QuitModel');
 const UserModel = require('../models/UserModel');
 
-const saveLocation = async (userNum, userlocation1, userlocation2, callback) => {
-    try {
-        const result = await UserModel.updateLocation(userNum, userlocation1, userlocation2);
-        callback(null, result);
-    } catch (err) {
-        callback(err);
-    }
+
+const saveLocation = async (userNum, userlocation1, userlocation2) => {
+    return await UserModel.updateLocation(userNum, userlocation1, userlocation2);
 };
 
 const getLocation = (userNum, callback) => {
@@ -18,8 +14,13 @@ const deleteUser = (userNum, callback) => {
     QuitModel.deleteUserFromDB(userNum, callback);
 };
 
+const changePassword = (userNum, currentPw, newPw, callback) => {
+    UserModel.verifyPasswordAndUpdate(userNum, currentPw, newPw, callback);
+};
+
 module.exports = {
     saveLocation,
     getLocation,
-    deleteUser
+    deleteUser, 
+    changePassword
 };

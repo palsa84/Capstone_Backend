@@ -24,7 +24,6 @@ const signup = (userName, userEmail, userPw, userGender, userBirth, userHealthIn
     });
 };
 
-
 // 로그인 서비스 로직
 // 이메일+비밀번호로 사용자 정보 가져오기
 const login = (userEmail, userPw, callback) => {
