@@ -11,4 +11,7 @@ router.post('/', cartController.addToCart);
 // 장바구니 삭제                 
 router.delete('/:cartId', cartController.removeFromCart);   
 
+// 유저 ID + 레슨 ID로 장바구니 항목 삭제
+router.delete('/user/:userId/lesson/:lessonId', cartController.removeByUserAndLesson);
+
 module.exports = router;
