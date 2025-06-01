@@ -26,6 +26,9 @@ const findLessonsByInstructorName = (instName, callback) => {
     UserModel.getLessonsByInstructorName(instName, callback);
 };
 
+const updateUserCareer = (userNum, userinfo, callback) => {
+    UserModel.updateUserinfo(userNum, userinfo, callback);
+};
 
 module.exports = {
     saveLocation,
@@ -33,5 +36,6 @@ module.exports = {
     deleteUser, 
     changePassword,
     findInstructorByName,
-    findLessonsByInstructorName
+    findLessonsByInstructorName,
+    updateUserCareer
 };

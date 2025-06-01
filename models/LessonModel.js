@@ -1,5 +1,6 @@
 const db = require('../db');
 
+// 지역 + 레벨 필터 조회
 const findByFilters = (place, level, callback) => {
     let sql = `
         SELECT 
@@ -36,6 +37,47 @@ const findByFilters = (place, level, callback) => {
     db.query(sql, params, callback);
 };
 
+// 레슨 수정
+const updateLesson = (lesNum, lessonData, callback) => {
+  const sql = `
+    UPDATE lesson
+    SET lesName = ?, lesinfo = ?, lesLevel = ?, lesDetailPlace = ?,
+        lesPrice = ?, lesTime = ?, lesThumbImg = ?, lesBackgroundImg = ?
+    WHERE lesNum = ?
+  `;
+  const values = [
+    lessonData.lesName,
+    lessonData.lesinfo,
+    lessonData.lesLevel,
+    lessonData.lesDetailPlace,
+    lessonData.lesPrice,
+    lessonData.lesTime,
+    lessonData.lesThumbImg,
+    lessonData.lesBackgroundImg,
+    lesNum
+  ];
+  db.query(sql, values, callback);
+};
+
+const getLessonsByInstructor = (instNum, callback) => {
+    const sql = 'SELECT * FROM lesson WHERE instNum = ?';
+    db.query(sql, [instNum], callback);
+};
+
+const getLessonById = (lesNum, callback) => {
+    const sql = 'SELECT * FROM lesson WHERE lesNum = ?';
+    db.query(sql, [lesNum], callback);
+};
+
+const getLessonByNum = (lesNum, callback) => {
+    const sql = 'SELECT * FROM lesson WHERE lesNum = ?';
+    db.query(sql, [lesNum], callback);
+};
+
 module.exports = {
     findByFilters,
+    updateLesson,
+    getLessonsByInstructor,
+    getLessonById,
+    getLessonByNum
 };

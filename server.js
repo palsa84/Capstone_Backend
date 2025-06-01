@@ -1,15 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+
+
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const userRoutes = require('./routes/userRoutes');  
 const lessonRoutes = require('./routes/lessonRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const applicationRoutes  = require('./routes/applicationRoutes');
+const lessonApiRoutes = require('./routes/lessonApiRoutes');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 
 // 미들웨어 설정
@@ -33,6 +37,10 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/users', userRoutes); 
 app.use('/api/favorite', favoriteRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/application', applicationRoutes);
+app.use('/api/lesson-api', lessonApiRoutes); 
+
+
 
 // 서버 실행
 app.listen(5000, '0.0.0.0', () => {

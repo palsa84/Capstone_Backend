@@ -89,6 +89,18 @@ const getLessonsByInstructorName = (req, res) => {
     });
 };
 
+const updateUserInfo = (req, res) => {
+    const { userNum, userinfo } = req.body;
+
+    userService.updateUserCareer(userNum, userinfo, (err, result) => {
+        if (err) {
+            console.error('경력 수정 실패:', err);
+            return res.status(500).json({ message: '서버 오류' });
+        }
+        res.json({ message: '경력 업데이트 완료' });
+    });
+};
+
 module.exports = {
     saveLocation,
     getLocation,
@@ -97,4 +109,5 @@ module.exports = {
     updatePassword, 
     getInstructorByName,
     getLessonsByInstructorName,
+    updateUserInfo
 };

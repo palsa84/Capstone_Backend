@@ -59,7 +59,10 @@ const getLessonsByInstructorName = (instName, callback) => {
     db.query(sql, [instName], callback);
 };
 
-
+const updateUserinfo = (userNum, userinfo, callback) => {
+    const sql = 'UPDATE user SET userinfo = ? WHERE userNum = ?';
+    db.query(sql, [userinfo, userNum], callback);
+};
 
 
 module.exports = {
@@ -67,5 +70,6 @@ module.exports = {
   getLocationFromDB,
   verifyPasswordAndUpdate,
   findInstructorByName,
-  getLessonsByInstructorName
+  getLessonsByInstructorName,
+  updateUserinfo
 };
