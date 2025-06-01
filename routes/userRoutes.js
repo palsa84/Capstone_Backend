@@ -7,5 +7,7 @@ router.get('/location/:userNum', userController.getLocation);
 router.delete('/delete/:userNum', userController.deleteUser); 
 router.post('/update-name', userController.updateUserName);
 router.post('/update-password', userController.updatePassword);
+router.get('/instructor/:instName', userController.getInstructorByName);
+router.get('/instructor/:instName/lessons', userController.getLessonsByInstructorName);
 
 module.exports = router;

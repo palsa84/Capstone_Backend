@@ -61,7 +61,33 @@ const updatePassword = (req, res) => {
     });
 };
 
+const getInstructorByName = (req, res) => {
+    const instName = req.params.instName;
 
+    userService.findInstructorByName(instName, (err, result) => {
+        if (err) {
+            console.error('강사 정보 조회 실패:', err);
+            return res.status(500).json({ message: '서버 오류' });
+        }
+        if (!result) {
+            return res.status(404).json({ message: '강사를 찾을 수 없습니다.' });
+        }
+        res.json(result);
+    });
+};
+
+// 해당 강사가 등록한 레슨 정보 전체 조회
+const getLessonsByInstructorName = (req, res) => {
+    const instName = req.params.instName;
+
+    userService.findLessonsByInstructorName(instName, (err, results) => {
+        if (err) {
+            console.error('레슨 목록 조회 실패:', err);
+            return res.status(500).json({ message: '서버 오류' });
+        }
+        res.json(results);
+    });
+};
 
 module.exports = {
     saveLocation,
@@ -69,4 +95,6 @@ module.exports = {
     deleteUser,
     updateUserName,
     updatePassword, 
+    getInstructorByName,
+    getLessonsByInstructorName,
 };

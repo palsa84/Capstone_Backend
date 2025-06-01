@@ -18,9 +18,20 @@ const changePassword = (userNum, currentPw, newPw, callback) => {
     UserModel.verifyPasswordAndUpdate(userNum, currentPw, newPw, callback);
 };
 
+const findInstructorByName = (instName, callback) => {
+    UserModel.findInstructorByName(instName, callback);
+};
+
+const findLessonsByInstructorName = (instName, callback) => {
+    UserModel.getLessonsByInstructorName(instName, callback);
+};
+
+
 module.exports = {
     saveLocation,
     getLocation,
     deleteUser, 
-    changePassword
+    changePassword,
+    findInstructorByName,
+    findLessonsByInstructorName
 };
