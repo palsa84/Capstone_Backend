@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const lessonApiController = require('../controllers/lessonApiController');
 
 const {
     getAllLessons,
@@ -39,6 +40,6 @@ router.put('/:lesNum', upload.fields([
     { name: 'lesThumbImg', maxCount: 1 },
     { name: 'lesBackgroundImg', maxCount: 1 }
 ]), updateLesson);
-router.delete('/:lesNum', deleteLesson);
+router.delete('/:lesNum', lessonApiController.deleteLesson);
 
 module.exports = router;

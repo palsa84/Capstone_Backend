@@ -28,17 +28,53 @@ const getLessonsByInstructor = (req, res) => {
     });
 };
 
+
 const createLesson = (req, res) => {
-    const data = {
-        ...req.body,
+    const {
+        instNum, lesName, lesinfo, lesLevel,
+        lesDetailPlace, lesPrice, lesTime, rating
+    } = req.body;
+
+    // 군/구 값만 허용
+    const lesPlace = (req.body.lesPlace || '').trim();
+    const VALID_PLACES = ['달서구', '달성군', '수성구', '중구', '남구', '북구', '동구', '서구', '군위군'];
+
+    // 잘못된 지역 필터링
+    if (!VALID_PLACES.includes(lesPlace)) {
+        console.log('잘못된 군/구:', lesPlace);
+        return res.status(400).json({ message: '잘못된 지역입니다. 군/구만 허용됩니다.' });
+    }
+
+    console.log('레슨 등록 요청값:', req.body);
+    console.log('전송된 lesPlace:', lesPlace);
+
+    const lessonData = {
+        instNum,
+        lesName,
+        lesinfo,
+        lesLevel,
+        lesPlace,
+        lesDetailPlace,
+        lesPrice,
+        lesTime,
+        rating,
         lesThumbImg: req.files?.lesThumbImg?.[0]?.filename || 'default_lesThumbImg.png',
-        lesBackgroundImg: req.files?.lesBackgroundImg?.[0]?.filename || 'default_background.png',
+        lesBackgroundImg: req.files?.lesBackgroundImg?.[0]?.filename || 'default_background.png'
     };
-    lessonModel.createLesson(data, (err, result) => {
-        if (err) return res.status(500).json({ message: '레슨 등록 실패' });
+
+    console.log('최종 전달할 데이터:', lessonData);
+
+    lessonModel.createLesson(lessonData, (err, result) => {
+        if (err) {
+            console.error('레슨 등록 실패:', err);
+            return res.status(500).json({ message: '레슨 등록 실패' });
+        }
         res.status(201).json({ message: '레슨 등록 완료', lessonId: result.insertId });
     });
 };
+
+
+
 
 const updateLesson = (req, res) => {
     const lesNum = req.params.lesNum;
@@ -82,5 +118,6 @@ module.exports = {
     createLesson,
     updateLesson,
     deleteLesson,
-    getLessonById
+    getLessonById,
+    
 };

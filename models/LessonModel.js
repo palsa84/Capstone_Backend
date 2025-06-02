@@ -74,10 +74,42 @@ const getLessonByNum = (lesNum, callback) => {
     db.query(sql, [lesNum], callback);
 };
 
+
+const createLesson = (lessonData, callback) => {
+    const sql = `
+        INSERT INTO lesson (
+            instNum, lesName, lesinfo, lesPlace,
+            lesDetailPlace, lesPrice, lesTime,
+            lesThumbImg, lesBackgroundImg, rating, lesLevel
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+        lessonData.instNum,
+        lessonData.lesName,
+        lessonData.lesinfo,
+        lessonData.lesPlace,
+        lessonData.lesDetailPlace,
+        lessonData.lesPrice,
+        lessonData.lesTime,
+        lessonData.lesThumbImg,
+        lessonData.lesBackgroundImg,
+        lessonData.rating,
+        lessonData.lesLevel
+    ];
+    db.query(sql, values, callback);
+};
+
+const deleteLesson = (lesNum, callback) => {
+    const sql = 'DELETE FROM lesson WHERE lesNum = ?';
+    db.query(sql, [lesNum], callback);
+};
+
 module.exports = {
     findByFilters,
     updateLesson,
     getLessonsByInstructor,
     getLessonById,
-    getLessonByNum
+    getLessonByNum,
+    createLesson,
+    deleteLesson
 };
