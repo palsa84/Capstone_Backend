@@ -32,7 +32,13 @@ const getOrdersByUserId = (userId, callback) => {
     db.query(sql, [userId], callback);
 };
 
+const deleteOrder = (userId, lessonId, callback) => {
+    const sql = 'DELETE FROM `order` WHERE userId = ? AND lessonId = ?';
+    db.query(sql, [userId, lessonId], callback);
+};
+
 module.exports = {
     addOrder,
-    getOrdersByUserId
+    getOrdersByUserId,
+    deleteOrder
 };

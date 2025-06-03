@@ -50,7 +50,19 @@ const getOrdersByUser = (req, res) => {
     });
 };
 
+const deleteOrder = (req, res) => {
+    const { userId, lessonId } = req.params;
+    OrderModel.deleteOrder(userId, lessonId, (err, result) => {
+        if (err) {
+            console.error('주문 삭제 실패:', err);
+            return res.status(500).json({ error: '삭제 실패' });
+        }
+        res.json({ success: true });
+    });
+};
+
 module.exports = {
     createOrder,
-    getOrdersByUser
+    getOrdersByUser,
+    deleteOrder
 };
