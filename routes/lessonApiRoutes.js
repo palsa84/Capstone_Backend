@@ -31,7 +31,7 @@ const upload = multer({ storage: storage });
 
 router.get('/', getAllLessons);
 router.get('/:lesNum', getLessonByNum);
-router.get('/instructor/:instNum', getLessonsByInstructor);
+router.get('/instructor/:instNum', lessonApiController.getLessonsByInstructor);
 router.post('/', upload.fields([
     { name: 'lesThumbImg', maxCount: 1 },
     { name: 'lesBackgroundImg', maxCount: 1 }

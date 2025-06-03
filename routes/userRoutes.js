@@ -10,5 +10,6 @@ router.post('/update-password', userController.updatePassword);
 router.get('/instructor/:instName', userController.getInstructorByName);
 router.get('/instructor/:instName/lessons', userController.getLessonsByInstructorName);
 router.post('/updateCareer', userController.updateUserInfo);
+router.put('/:userNum', userController.updateProfileInfo);
 
 module.exports = router;

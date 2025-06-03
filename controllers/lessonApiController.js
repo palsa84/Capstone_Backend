@@ -78,17 +78,21 @@ const createLesson = (req, res) => {
 
 const updateLesson = (req, res) => {
     const lesNum = req.params.lesNum;
+
+    const lesThumbImg = req.files?.lesThumbImg?.[0]?.filename || req.body.originThumb;
+    const lesBackgroundImg = req.files?.lesBackgroundImg?.[0]?.filename || req.body.originBg;
+
     const data = {
         ...req.body,
-        lesThumbImg: req.files?.lesThumbImg?.[0]?.filename,
-        lesBackgroundImg: req.files?.lesBackgroundImg?.[0]?.filename
+        lesThumbImg,
+        lesBackgroundImg
     };
+
     lessonModel.updateLesson(lesNum, data, (err) => {
         if (err) return res.status(500).json({ message: '레슨 수정 실패' });
         res.json({ message: '레슨 수정 완료' });
     });
 };
-
 const deleteLesson = (req, res) => {
     const lesNum = req.params.lesNum;
     lessonModel.deleteLesson(lesNum, (err) => {

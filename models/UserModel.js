@@ -59,11 +59,41 @@ const getLessonsByInstructorName = (instName, callback) => {
     db.query(sql, [instName], callback);
 };
 
-const updateUserinfo = (userNum, userinfo, callback) => {
-    const sql = 'UPDATE user SET userinfo = ? WHERE userNum = ?';
-    db.query(sql, [userinfo, userNum], callback);
+const updateUserinfo = (userNum, updatedInfo, callback) => {
+    const sql = `
+        UPDATE user SET 
+            userName = ?,
+            userEmail = ?,
+            userGender = ?,
+            userBirth = ?,
+            userHealthInfo = ?
+        WHERE userNum = ?`;
+
+    const params = [
+        updatedInfo.userName,
+        updatedInfo.userEmail,
+        updatedInfo.userGender,
+        updatedInfo.userBirth,
+        updatedInfo.userHealthInfo,
+        userNum
+    ];
+
+    db.query(sql, params, callback);
 };
 
+const findUserByEmailAndPassword = (email, pw, callback) => {
+    const sql = 'SELECT * FROM user WHERE userEmail = ? AND userPw = ?';
+    db.query(sql, [email, pw], callback);
+};
+
+const updateProfileInfo = (userNum, updatedInfo, callback) => {
+    const sql = `
+        UPDATE user 
+        SET userName = ?, userHealthInfo = ?
+        WHERE userNum = ?`;
+    const params = [updatedInfo.userName, updatedInfo.userHealthInfo, userNum];
+    db.query(sql, params, callback);
+};
 
 module.exports = {
   updateLocation,
@@ -71,5 +101,7 @@ module.exports = {
   verifyPasswordAndUpdate,
   findInstructorByName,
   getLessonsByInstructorName,
-  updateUserinfo
+  updateUserinfo,
+  findUserByEmailAndPassword,
+  updateProfileInfo
 };

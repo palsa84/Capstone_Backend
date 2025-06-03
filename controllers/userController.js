@@ -101,6 +101,19 @@ const updateUserInfo = (req, res) => {
     });
 };
 
+const updateProfileInfo = (req, res) => {
+    const userNum = req.params.userNum;
+    const { userName, userHealthInfo } = req.body;
+
+    userService.updateProfileInfo(userNum, { userName, userHealthInfo }, (err, result) => {
+        if (err) {
+            console.error('이름/건강정보 수정 실패:', err);
+            return res.status(500).json({ message: '서버 오류' });
+        }
+        res.json({ message: '이름/건강정보 수정 완료' });
+    });
+};
+
 module.exports = {
     saveLocation,
     getLocation,
@@ -109,5 +122,6 @@ module.exports = {
     updatePassword, 
     getInstructorByName,
     getLessonsByInstructorName,
-    updateUserInfo
+    updateUserInfo,
+    updateProfileInfo
 };

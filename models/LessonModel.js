@@ -39,28 +39,38 @@ const findByFilters = (place, level, callback) => {
 
 // 레슨 수정
 const updateLesson = (lesNum, lessonData, callback) => {
-  const sql = `
-    UPDATE lesson
-    SET lesName = ?, lesinfo = ?, lesLevel = ?, lesDetailPlace = ?,
-        lesPrice = ?, lesTime = ?, lesThumbImg = ?, lesBackgroundImg = ?
-    WHERE lesNum = ?
-  `;
-  const values = [
-    lessonData.lesName,
-    lessonData.lesinfo,
-    lessonData.lesLevel,
-    lessonData.lesDetailPlace,
-    lessonData.lesPrice,
-    lessonData.lesTime,
-    lessonData.lesThumbImg,
-    lessonData.lesBackgroundImg,
-    lesNum
-  ];
-  db.query(sql, values, callback);
+    const sql = `
+        UPDATE lesson
+        SET lesName = ?, lesinfo = ?, lesLevel = ?, lesPlace = ?, lesDetailPlace = ?,
+            lesPrice = ?, lesTime = ?, lesThumbImg = ?, lesBackgroundImg = ?
+        WHERE lesNum = ?
+    `;
+    const values = [
+        lessonData.lesName,
+        lessonData.lesinfo,
+        lessonData.lesLevel,
+        lessonData.lesPlace,
+        lessonData.lesDetailPlace,
+        lessonData.lesPrice,
+        lessonData.lesTime,
+        lessonData.lesThumbImg,
+        lessonData.lesBackgroundImg,
+        lesNum
+    ];
+    db.query(sql, values, callback);
 };
 
 const getLessonsByInstructor = (instNum, callback) => {
-    const sql = 'SELECT * FROM lesson WHERE instNum = ?';
+    const sql = `
+        SELECT 
+            lesson.*, 
+            user.userImg AS userImg, 
+            user.userinfo AS userinfo, 
+            user.userName AS instName
+        FROM lesson
+        JOIN user ON lesson.instNum = user.userNum
+        WHERE instNum = ?
+    `;
     db.query(sql, [instNum], callback);
 };
 
@@ -104,6 +114,11 @@ const deleteLesson = (lesNum, callback) => {
     db.query(sql, [lesNum], callback);
 };
 
+const getLessonByIdAsync = (lesNum) => {
+    const sql = 'SELECT * FROM lesson WHERE lesNum = ?';
+    return db.promise().query(sql, [lesNum]).then(([rows]) => rows);
+};
+
 module.exports = {
     findByFilters,
     updateLesson,
@@ -111,5 +126,6 @@ module.exports = {
     getLessonById,
     getLessonByNum,
     createLesson,
-    deleteLesson
+    deleteLesson,
+    getLessonByIdAsync
 };

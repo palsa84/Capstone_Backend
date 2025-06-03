@@ -30,6 +30,10 @@ const updateUserCareer = (userNum, userinfo, callback) => {
     UserModel.updateUserinfo(userNum, userinfo, callback);
 };
 
+const updateProfileInfo = (userNum, updatedInfo, callback) => {
+    UserModel.updateProfileInfo(userNum, updatedInfo, callback);
+};
+
 module.exports = {
     saveLocation,
     getLocation,
@@ -37,5 +41,6 @@ module.exports = {
     changePassword,
     findInstructorByName,
     findLessonsByInstructorName,
-    updateUserCareer
+    updateUserCareer,
+    updateProfileInfo
 };
